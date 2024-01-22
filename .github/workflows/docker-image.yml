@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: cicd pipeline
 
 on:
   push:
@@ -15,20 +15,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag sbacr02.azurecr.io/sidapp01:latest
+      run: docker build . --file Dockerfile --tag psacr02.azurecr.io/sidapp01:latest
       
     - name: Azure Container Registry Login
       uses: Azure/docker-login@v1
       with:
         # Container registry username
-        username: sbacr02
+        username: psacr02
         # Container registry password
-        password: lZWpE79iPIJA8WHjvYoW7QqC0aMqMC/r
+        password: gnyEpg0ZZApoepRJfMKv+Mldhyg1WQQh+7Hjz8Tzjc+ACRC/Li9N
         # Container registry server url
-        login-server: sbacr02.azurecr.io
+        login-server: psacr02.azurecr.io
         
     - name: Push Image  
-      run: docker push sbacr02.azurecr.io/sidapp01:latest
+      run: docker push psacr02.azurecr.io/sidapp01:latest
       
   deploy:
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
         kubeconfig: ${{secrets.KUBECONFIG}} # Grab the auth token from GitHub secrets
       id: login
       
-    #Declarative Deployment-02
+    # Declarative Deployment-02
     - name: Kubernetes Deployment
       run: kubectl apply -f deployment.yaml
     - name: Service Deployment
