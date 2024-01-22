@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag psacr02.azurecr.io/sidapp01:latest
+      run: docker build . --file Dockerfile --tag psacr02.azurecr.io/<your-name>app01:latest
       
     - name: Azure Container Registry Login
       uses: Azure/docker-login@v1
@@ -23,12 +23,12 @@ jobs:
         # Container registry username
         username: psacr02
         # Container registry password
-        password: gnyEpg0ZZApoepRJfMKv+Mldhyg1WQQh+7Hjz8Tzjc+ACRC/Li9N
+        password: ${{secrets.ACR_CREDENTIALS}}
         # Container registry server url
         login-server: psacr02.azurecr.io
         
     - name: Push Image  
-      run: docker push psacr02.azurecr.io/sidapp01:latest
+      run: docker push psacr02.azurecr.io/<your-name>app01:latest
       
   deploy:
     runs-on: ubuntu-latest

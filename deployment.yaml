@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: sidapp01
-        image: psacr02.azurecr.io/sidapp01:latest
+        image: psacr02.azurecr.io/<your-name>app01:latest
         resources:
           limits:
             memory: "128Mi"
