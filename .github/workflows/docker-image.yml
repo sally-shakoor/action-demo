@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag psacr02.azurecr.io/<your-name>app01:latest
+      run: docker build . --file Dockerfile --tag psacr02.azurecr.io/sallyapp01:latest
       
     - name: Azure Container Registry Login
       uses: Azure/docker-login@v1
@@ -28,7 +28,7 @@ jobs:
         login-server: psacr02.azurecr.io
         
     - name: Push Image  
-      run: docker push psacr02.azurecr.io/<your-name>app01:latest
+      run: docker push psacr02.azurecr.io/sallyapp01:latest
       
   deploy:
     runs-on: ubuntu-latest
@@ -40,7 +40,7 @@ jobs:
     - name: Kubernetes set context
       uses: Azure/k8s-set-context@v1
       with:
-        kubeconfig: ${{secrets.KUBECONFIG}} # Grab the auth token from GitHub secrets
+        kubeconfig: $ # Grab the auth token from GitHub secrets
       id: login
       
     # Declarative Deployment-02
@@ -48,5 +48,3 @@ jobs:
       run: kubectl apply -f deployment.yaml
     - name: Service Deployment
       run: kubectl apply -f service.yaml
-
-    
