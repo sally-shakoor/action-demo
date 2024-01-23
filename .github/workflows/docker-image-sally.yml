@@ -1,0 +1,50 @@
+name: cicd pipeline
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build_push_image:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag psacr02.azurecr.io/sallyapp01:latest
+      
+    - name: Azure Container Registry Login
+      uses: Azure/docker-login@v1
+      with:
+        # Container registry username
+        username: psacr02
+        # Container registry password
+        password: ${{secrets.ACR_CREDENTIALS}}
+        # Container registry server url
+        login-server: psacr02.azurecr.io
+        
+    - name: Push Image  
+      run: docker push psacr02.azurecr.io/sallyapp01:latest
+      
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build_push_image # Will wait for the execution of the previous job 
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Kubernetes set context
+      uses: Azure/k8s-set-context@v1
+      with:
+        kubeconfig: $ # Grab the auth token from GitHub secrets
+      id: login
+      
+    # Declarative Deployment-02
+    - name: Kubernetes Deployment
+      run: kubectl apply -f deployment.yaml
+    - name: Service Deployment
+      run: kubectl apply -f service.yaml
