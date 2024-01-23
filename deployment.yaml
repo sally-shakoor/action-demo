@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sallyapp01
+  name: sidapp01
 spec:
   selector:
     matchLabels:
-      app: sallyapp01
+      app: sidapp01
   template:
     metadata:
       labels:
-        app: sallyapp01
+        app: sidapp01
     spec:
       containers:
-      - name: sallyapp01
+      - name: sidapp01
         image: psacr02.azurecr.io/sallyapp01:latest
         resources:
           limits:
